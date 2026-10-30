@@ -1,1373 +1,1377 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEW FAMILY 100 - PPKn KELAS IX (Perubahan UUD NRI 1945)</title>
-  <style>
-    :root {
-      --bg-gradient: radial-gradient(circle at center, #1a2a6c, #131d47 50%, #080c1f 100%);
-      --gold-primary: #f5b000;
-      --gold-light: #fff280;
-      --gold-dark: #b87b00;
-      --blue-glow: rgba(0, 212, 255, 0.8);
-      --red-x: #ff2a2a;
-      --board-blue: #0b2265;
-      --card-back: linear-gradient(145deg, #0d3896, #061e56);
-      --card-front: linear-gradient(145deg, #f5b000, #ffdf6d);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg-gradient);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      overflow-x: hidden;
-    }
-
-    /* HEADER & LOGO */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 35px;
-      background: rgba(4, 10, 32, 0.75);
-      border-bottom: 2px solid rgba(245, 176, 0, 0.4);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .badge-logo {
-      background: linear-gradient(135deg, #f7ce00, #df8900);
-      padding: 6px 14px;
-      border-radius: 50px;
-      font-weight: 900;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      color: #0d1e57;
-      text-shadow: 0 1px 2px rgba(255,255,255,0.6);
-      box-shadow: 0 0 15px rgba(245, 176, 0, 0.7), inset 0 2px 4px rgba(255,255,255,0.5);
-      border: 2px solid #fff;
-    }
-
-    .header-titles h1 {
-      font-size: 1.35rem;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      color: #fff;
-      text-shadow: 0 0 10px var(--blue-glow);
-    }
-
-    .header-titles p {
-      font-size: 0.85rem;
-      color: #9cbaff;
-    }
-
-    .question-tracker {
-      background: #0d1e57;
-      border: 2px solid var(--gold-primary);
-      padding: 6px 18px;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: var(--gold-light);
-      box-shadow: 0 0 10px rgba(245, 176, 0, 0.4);
-    }
-
-    /* MAIN STAGE */
-    .stage {
-      display: grid;
-      grid-template-columns: 250px 1fr 250px;
-      gap: 20px;
-      padding: 15px 30px;
-      align-items: center;
-      flex-grow: 1;
-    }
-
-    /* TEAM PANELS */
-    .team-card {
-      background: rgba(10, 24, 69, 0.85);
-      border: 3px solid rgba(255, 255, 255, 0.15);
-      border-radius: 18px;
-      padding: 20px 15px;
-      text-align: center;
-      transition: all 0.3s ease;
-      position: relative;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-    }
-
-    .team-card.active {
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 30px rgba(245, 176, 0, 0.6), inset 0 0 15px rgba(245, 176, 0, 0.2);
-      transform: scale(1.03);
-    }
-
-    .team-label {
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      color: #bed5ff;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-
-    .round-score-tag {
-      font-size: 0.78rem;
-      color: #ffca28;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .team-card.active .team-label {
-      color: var(--gold-light);
-      text-shadow: 0 0 8px var(--gold-primary);
-    }
-
-    .score-display {
-      font-size: 3.8rem;
-      font-weight: 900;
-      background: linear-gradient(to bottom, #ffffff, #cfd8dc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1;
-      margin: 8px 0;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    }
-
-    .strikes-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .strike-box {
-      width: 44px;
-      height: 44px;
-      background: #060e28;
-      border: 2px solid #233777;
-      border-radius: 10px;
-      font-size: 1.8rem;
-      font-weight: 900;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: transparent;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .strike-box.active {
-      color: var(--red-x);
-      border-color: var(--red-x);
-      box-shadow: 0 0 15px rgba(255, 42, 42, 0.8), inset 0 0 8px rgba(255, 42, 42, 0.4);
-      transform: scale(1.1);
-    }
-
-    .points-bubble {
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #00e676;
-      color: #032b14;
-      font-weight: 900;
-      font-size: 1.1rem;
-      padding: 6px 14px;
-      border-radius: 30px;
-      box-shadow: 0 0 15px #00e676;
-      opacity: 0;
-      pointer-events: none;
-      white-space: nowrap;
-      z-index: 10;
-    }
-
-    .points-bubble.negative {
-      background: #ff5252;
-      color: #fff;
-      box-shadow: 0 0 15px #ff5252;
-    }
-
-    /* CENTER BOARD */
-    .game-board {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      width: 100%;
-      max-width: 820px;
-      margin: 0 auto;
-    }
-
-    .question-box {
-      background: linear-gradient(135deg, #0f2766, #09183e);
-      border: 2px solid #3366cc;
-      border-radius: 14px;
-      padding: 18px 25px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-    }
-
-    .question-box h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      line-height: 1.4;
-      color: #e3edff;
-    }
-
-    /* CARDS CONTAINER */
-    .survey-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      perspective: 1000px;
-    }
-
-    .survey-card {
-      height: 56px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-      cursor: pointer;
-    }
-
-    .survey-card.revealed {
-      transform: rotateX(180deg);
-    }
-
-    .card-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      font-size: 1.15rem;
-      font-weight: 700;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Closed Face */
-    .card-face.front {
-      background: var(--card-back);
-      border: 2px solid #2955b5;
-      color: #bed5ff;
-    }
-
-    .card-face.front .number-chip {
-      background: #05143a;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid #4578e6;
-      color: var(--gold-primary);
-    }
-
-    .card-face.front .points-label {
-      color: #6d93e8;
-      font-size: 0.95rem;
-    }
-
-    /* Revealed Face */
-    .card-face.back {
-      background: linear-gradient(90deg, #093b91 0%, #1052c5 75%, #f5b000 75%, #e09e00 100%);
-      border: 2px solid var(--gold-light);
-      transform: rotateX(180deg);
-      color: #ffffff;
-      padding-right: 0;
-      overflow: hidden;
-    }
-
-    .card-face.back.no-point-glow {
-      background: linear-gradient(90deg, #1b3860 0%, #294677 75%, #78909c 75%, #607d8b 100%);
-      border-color: #90a4ae;
-    }
-
-    .answer-text {
-      flex: 1;
-      padding-right: 15px;
-      text-transform: uppercase;
-      font-size: 1.05rem;
-      letter-spacing: 0.5px;
-    }
-
-    .answer-points {
-      width: 25%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.45rem;
-      font-weight: 900;
-      color: #0b1a42;
-    }
-
-    /* OVERLAY WRONG (X) */
-    .overlay-strike {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.15s ease;
-    }
-
-    .overlay-strike.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .giant-x {
-      font-size: 16rem;
-      font-weight: 900;
-      color: var(--red-x);
-      text-shadow: 0 0 50px rgba(255, 42, 42, 0.9), 0 0 100px rgba(255, 0, 0, 0.6);
-      transform: scale(0.4);
-      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .overlay-strike.show .giant-x {
-      transform: scale(1);
-    }
-
-    /* TEACHER CONTROL PANEL */
-    .control-panel {
-      background: #050b1d;
-      border-top: 3px solid #233b7b;
-      padding: 12px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
-    }
-
-    .input-bar {
-      display: flex;
-      gap: 10px;
-      width: 100%;
-      max-width: 950px;
-      margin: 0 auto;
-    }
-
-    .input-bar input {
-      flex: 1;
-      padding: 9px 18px;
-      border-radius: 8px;
-      border: 2px solid #2c4994;
-      background: #0d193d;
-      color: #fff;
-      font-size: 1.05rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .input-bar input:focus {
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 10px rgba(245, 176, 0, 0.4);
-    }
-
-    .btn {
-      padding: 8px 13px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.86rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-      color: #fff;
-    }
-
-    .btn:active {
-      transform: scale(0.96);
-    }
-
-    .btn-gold {
-      background: linear-gradient(135deg, #f5b000, #c48900);
-      color: #0b1a42;
-    }
-
-    .btn-gold:hover {
-      background: linear-gradient(135deg, #ffd054, #d49500);
-    }
-
-    .btn-red {
-      background: linear-gradient(135deg, #e53935, #b71c1c);
-    }
-
-    .btn-red:hover {
-      background: linear-gradient(135deg, #ff5252, #c62828);
-    }
-
-    .btn-crimson {
-      background: linear-gradient(135deg, #b71c1c, #880e4f);
-      border: 1px solid #ff80ab;
-      box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
-    }
-
-    .btn-crimson:hover {
-      background: linear-gradient(135deg, #d81b60, #ad1457);
-    }
-
-    .btn-blue {
-      background: linear-gradient(135deg, #1e88e5, #1565c0);
-    }
-
-    .btn-blue:hover {
-      background: linear-gradient(135deg, #42a5f5, #1976d2);
-    }
-
-    .btn-purple {
-      background: linear-gradient(135deg, #8e24aa, #5e35b1);
-    }
-
-    .btn-purple:hover {
-      background: linear-gradient(135deg, #ab47bc, #7e57c2);
-    }
-
-    .btn-orange {
-      background: linear-gradient(135deg, #f4511e, #d84315);
-    }
-
-    .btn-orange:hover {
-      background: linear-gradient(135deg, #ff7043, #e64a19);
-    }
-
-    .btn-dark {
-      background: #1c274c;
-      border: 1px solid #36487e;
-    }
-
-    .btn-dark:hover {
-      background: #2a3a6e;
-    }
-
-    .button-group-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 7px;
-      max-width: 1250px;
-      margin: 0 auto;
-    }
-
-    .manual-reveal-group {
-      display: inline-flex;
-      background: #0d1a3b;
-      padding: 3px;
-      border-radius: 8px;
-      border: 1px solid #233b7b;
-      gap: 3px;
-      align-items: center;
-    }
-
-    .manual-reveal-group.no-pts {
-      border-color: #607d8b;
-      background: #0e1e2d;
-    }
-
-    .manual-reveal-group span {
-      font-size: 0.78rem;
-      color: #9cbaff;
-      padding: 0 5px;
-    }
-
-    .manual-reveal-group.no-pts span {
-      color: #b0bec5;
-    }
-
-    .manual-reveal-group button {
-      padding: 5px 10px;
-      font-size: 0.82rem;
-      background: #182c61;
-      color: var(--gold-light);
-      border: 1px solid #35539e;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .manual-reveal-group.no-pts button {
-      background: #263238;
-      color: #cfd8dc;
-      border-color: #455a64;
-    }
-
-    .manual-reveal-group button:hover {
-      background: var(--gold-primary);
-      color: #0b1a42;
-    }
-
-    .manual-reveal-group.no-pts button:hover {
-      background: #78909c;
-      color: #fff;
-    }
-
-    /* MODAL VICTORY */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 9, 28, 0.85);
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-backdrop.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-card {
-      background: linear-gradient(145deg, #0e1e4a, #060e26);
-      border: 3px solid var(--gold-primary);
-      border-radius: 20px;
-      padding: 35px 45px;
-      text-align: center;
-      max-width: 520px;
-      width: 90%;
-      box-shadow: 0 0 50px rgba(245, 176, 0, 0.5);
-      transform: scale(0.8);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .modal-backdrop.show .modal-card {
-      transform: scale(1);
-    }
-
-    .modal-card h2 {
-      font-size: 2.2rem;
-      color: var(--gold-light);
-      text-shadow: 0 0 15px var(--gold-primary);
-      margin-bottom: 20px;
-    }
-
-    .modal-scores {
-      display: flex;
-      justify-content: space-around;
-      margin: 25px 0;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 12px;
-    }
-
-    .modal-score-item h4 {
-      color: #9cbaff;
-      font-size: 1rem;
-      margin-bottom: 6px;
-    }
-
-    .modal-score-item div {
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: #fff;
-    }
-
-    .modal-winner-badge {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #00e676;
-      margin-bottom: 25px;
-      text-transform: uppercase;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- HEADER -->
-  <header>
-    <div class="logo-container">
-      <div class="badge-logo">NEW FAMILY 100</div>
-      <div class="header-titles">
-        <h1>PPKn Kelas IX</h1>
-        <p>Tema: Perubahan UUD NRI Tahun 1945</p>
-      </div>
-    </div>
-    <div class="question-tracker" id="trackerDisplay">
-      Soal 1 dari 15
-    </div>
-  </header>
-
-  <!-- ARENA KUIS -->
-  <main class="stage">
-    <!-- PANEL TIM 1 -->
-    <section class="team-card active" id="teamCard1">
-      <div class="points-bubble" id="bubble1">+100 POIN!</div>
-      <div class="team-label" id="nameDisplay1">TIM 1</div>
-      <div class="round-score-tag" id="roundScoreTag1">Poin Soal Ini: 0</div>
-      <div class="score-display" id="score1">0</div>
-      <div class="strikes-container">
-        <div class="strike-box" id="t1-x1">❌</div>
-        <div class="strike-box" id="t1-x2">❌</div>
-        <div class="strike-box" id="t1-x3">❌</div>
-      </div>
-    </section>
-
-    <!-- PAPAN SOAL DAN 5 JAWABAN -->
-    <section class="game-board">
-      <div class="question-box">
-        <h2 id="questionText">Memuat pertanyaan kuis...</h2>
-      </div>
-
-      <div class="survey-list">
-        <!-- 5 Card Jawaban Survei -->
-        <div class="survey-card" id="card-0" onclick="revealCard(0, true)">
-          <div class="card-face front">
-            <span class="number-chip">1</span>
-            <span class="points-label">100 Poin</span>
-          </div>
-          <div class="card-face back" id="card-back-0">
-            <span class="answer-text" id="ans-text-0">Jawaban 1</span>
-            <span class="answer-points">100</span>
-          </div>
-        </div>
-
-        <div class="survey-card" id="card-1" onclick="revealCard(1, true)">
-          <div class="card-face front">
-            <span class="number-chip">2</span>
-            <span class="points-label">80 Poin</span>
-          </div>
-          <div class="card-face back" id="card-back-1">
-            <span class="answer-text" id="ans-text-1">Jawaban 2</span>
-            <span class="answer-points">80</span>
-          </div>
-        </div>
-
-        <div class="survey-card" id="card-2" onclick="revealCard(2, true)">
-          <div class="card-face front">
-            <span class="number-chip">3</span>
-            <span class="points-label">60 Poin</span>
-          </div>
-          <div class="card-face back" id="card-back-2">
-            <span class="answer-text" id="ans-text-2">Jawaban 3</span>
-            <span class="answer-points">60</span>
-          </div>
-        </div>
-
-        <div class="survey-card" id="card-3" onclick="revealCard(3, true)">
-          <div class="card-face front">
-            <span class="number-chip">4</span>
-            <span class="points-label">40 Poin</span>
-          </div>
-          <div class="card-face back" id="card-back-3">
-            <span class="answer-text" id="ans-text-3">Jawaban 4</span>
-            <span class="answer-points">40</span>
-          </div>
-        </div>
-
-        <div class="survey-card" id="card-4" onclick="revealCard(4, true)">
-          <div class="card-face front">
-            <span class="number-chip">5</span>
-            <span class="points-label">20 Poin</span>
-          </div>
-          <div class="card-face back" id="card-back-4">
-            <span class="answer-text" id="ans-text-4">Jawaban 5</span>
-            <span class="answer-points">20</span>
-          </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEW FAMILY 100 - PPKn KELAS IX (Perubahan UUD NRI 1945)</title>
+    <style>
+      :root {
+        --bg-gradient: radial-gradient(circle at center, #1a2a6c, #131d47 50%, #080c1f 100%);
+        --gold-primary: #f5b000;
+        --gold-light: #fff280;
+        --gold-dark: #b87b00;
+        --blue-glow: rgba(0, 212, 255, 0.8);
+        --red-x: #ff2a2a;
+        --board-blue: #0b2265;
+        --card-back: linear-gradient(145deg, #0d3896, #061e56);
+        --card-front: linear-gradient(145deg, #f5b000, #ffdf6d);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg-gradient);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow-x: hidden;
+      }
+
+      /* HEADER & LOGO */
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 35px;
+        background: rgba(4, 10, 32, 0.75);
+        border-bottom: 2px solid rgba(245, 176, 0, 0.4);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .badge-logo {
+        background: linear-gradient(135deg, #f7ce00, #df8900);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-weight: 900;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+        color: #0d1e57;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+        box-shadow:
+          0 0 15px rgba(245, 176, 0, 0.7),
+          inset 0 2px 4px rgba(255, 255, 255, 0.5);
+        border: 2px solid #fff;
+      }
+
+      .header-titles h1 {
+        font-size: 1.35rem;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: #fff;
+        text-shadow: 0 0 10px var(--blue-glow);
+      }
+
+      .header-titles p {
+        font-size: 0.85rem;
+        color: #9cbaff;
+      }
+
+      .question-tracker {
+        background: #0d1e57;
+        border: 2px solid var(--gold-primary);
+        padding: 6px 18px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: var(--gold-light);
+        box-shadow: 0 0 10px rgba(245, 176, 0, 0.4);
+      }
+
+      /* MAIN STAGE */
+      .stage {
+        display: grid;
+        grid-template-columns: 250px 1fr 250px;
+        gap: 20px;
+        padding: 15px 30px;
+        align-items: center;
+        flex-grow: 1;
+      }
+
+      /* TEAM PANELS */
+      .team-card {
+        background: rgba(10, 24, 69, 0.85);
+        border: 3px solid rgba(255, 255, 255, 0.15);
+        border-radius: 18px;
+        padding: 20px 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .team-card.active {
+        border-color: var(--gold-primary);
+        box-shadow:
+          0 0 30px rgba(245, 176, 0, 0.6),
+          inset 0 0 15px rgba(245, 176, 0, 0.2);
+        transform: scale(1.03);
+      }
+
+      .team-label {
+        font-size: 1.3rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: #bed5ff;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+      }
+
+      .round-score-tag {
+        font-size: 0.78rem;
+        color: #ffca28;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .team-card.active .team-label {
+        color: var(--gold-light);
+        text-shadow: 0 0 8px var(--gold-primary);
+      }
+
+      .score-display {
+        font-size: 3.8rem;
+        font-weight: 900;
+        background: linear-gradient(to bottom, #ffffff, #cfd8dc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+        margin: 8px 0;
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      .strikes-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .strike-box {
+        width: 44px;
+        height: 44px;
+        background: #060e28;
+        border: 2px solid #233777;
+        border-radius: 10px;
+        font-size: 1.8rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: transparent;
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .strike-box.active {
+        color: var(--red-x);
+        border-color: var(--red-x);
+        box-shadow:
+          0 0 15px rgba(255, 42, 42, 0.8),
+          inset 0 0 8px rgba(255, 42, 42, 0.4);
+        transform: scale(1.1);
+      }
+
+      .points-bubble {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #00e676;
+        color: #032b14;
+        font-weight: 900;
+        font-size: 1.1rem;
+        padding: 6px 14px;
+        border-radius: 30px;
+        box-shadow: 0 0 15px #00e676;
+        opacity: 0;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 10;
+      }
+
+      .points-bubble.negative {
+        background: #ff5252;
+        color: #fff;
+        box-shadow: 0 0 15px #ff5252;
+      }
+
+      /* CENTER BOARD */
+      .game-board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto;
+      }
+
+      .question-box {
+        background: linear-gradient(135deg, #0f2766, #09183e);
+        border: 2px solid #3366cc;
+        border-radius: 14px;
+        padding: 18px 25px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      }
+
+      .question-box h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.4;
+        color: #e3edff;
+      }
+
+      /* CARDS CONTAINER */
+      .survey-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        perspective: 1000px;
+      }
+
+      .survey-card {
+        height: 56px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        cursor: pointer;
+      }
+
+      .survey-card.revealed {
+        transform: rotateX(180deg);
+      }
+
+      .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Closed Face */
+      .card-face.front {
+        background: var(--card-back);
+        border: 2px solid #2955b5;
+        color: #bed5ff;
+      }
+
+      .card-face.front .number-chip {
+        background: #05143a;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #4578e6;
+        color: var(--gold-primary);
+      }
+
+      .card-face.front .points-label {
+        color: #6d93e8;
+        font-size: 0.95rem;
+      }
+
+      /* Revealed Face */
+      .card-face.back {
+        background: linear-gradient(90deg, #093b91 0%, #1052c5 75%, #f5b000 75%, #e09e00 100%);
+        border: 2px solid var(--gold-light);
+        transform: rotateX(180deg);
+        color: #ffffff;
+        padding-right: 0;
+        overflow: hidden;
+      }
+
+      .card-face.back.no-point-glow {
+        background: linear-gradient(90deg, #1b3860 0%, #294677 75%, #78909c 75%, #607d8b 100%);
+        border-color: #90a4ae;
+      }
+
+      .answer-text {
+        flex: 1;
+        padding-right: 15px;
+        text-transform: uppercase;
+        font-size: 1.05rem;
+        letter-spacing: 0.5px;
+      }
+
+      .answer-points {
+        width: 25%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.45rem;
+        font-weight: 900;
+        color: #0b1a42;
+      }
+
+      /* OVERLAY WRONG (X) */
+      .overlay-strike {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+      }
+
+      .overlay-strike.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .giant-x {
+        font-size: 16rem;
+        font-weight: 900;
+        color: var(--red-x);
+        text-shadow:
+          0 0 50px rgba(255, 42, 42, 0.9),
+          0 0 100px rgba(255, 0, 0, 0.6);
+        transform: scale(0.4);
+        transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .overlay-strike.show .giant-x {
+        transform: scale(1);
+      }
+
+      /* TEACHER CONTROL PANEL */
+      .control-panel {
+        background: #050b1d;
+        border-top: 3px solid #233b7b;
+        padding: 12px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6);
+      }
+
+      .input-bar {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        max-width: 950px;
+        margin: 0 auto;
+      }
+
+      .input-bar input {
+        flex: 1;
+        padding: 9px 18px;
+        border-radius: 8px;
+        border: 2px solid #2c4994;
+        background: #0d193d;
+        color: #fff;
+        font-size: 1.05rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .input-bar input:focus {
+        border-color: var(--gold-primary);
+        box-shadow: 0 0 10px rgba(245, 176, 0, 0.4);
+      }
+
+      .btn {
+        padding: 8px 13px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.86rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: all 0.15s ease;
+        color: #fff;
+      }
+
+      .btn:active {
+        transform: scale(0.96);
+      }
+
+      .btn-gold {
+        background: linear-gradient(135deg, #f5b000, #c48900);
+        color: #0b1a42;
+      }
+
+      .btn-gold:hover {
+        background: linear-gradient(135deg, #ffd054, #d49500);
+      }
+
+      .btn-red {
+        background: linear-gradient(135deg, #e53935, #b71c1c);
+      }
+
+      .btn-red:hover {
+        background: linear-gradient(135deg, #ff5252, #c62828);
+      }
+
+      .btn-crimson {
+        background: linear-gradient(135deg, #b71c1c, #880e4f);
+        border: 1px solid #ff80ab;
+        box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
+      }
+
+      .btn-crimson:hover {
+        background: linear-gradient(135deg, #d81b60, #ad1457);
+      }
+
+      .btn-blue {
+        background: linear-gradient(135deg, #1e88e5, #1565c0);
+      }
+
+      .btn-blue:hover {
+        background: linear-gradient(135deg, #42a5f5, #1976d2);
+      }
+
+      .btn-purple {
+        background: linear-gradient(135deg, #8e24aa, #5e35b1);
+      }
+
+      .btn-purple:hover {
+        background: linear-gradient(135deg, #ab47bc, #7e57c2);
+      }
+
+      .btn-orange {
+        background: linear-gradient(135deg, #f4511e, #d84315);
+      }
+
+      .btn-orange:hover {
+        background: linear-gradient(135deg, #ff7043, #e64a19);
+      }
+
+      .btn-dark {
+        background: #1c274c;
+        border: 1px solid #36487e;
+      }
+
+      .btn-dark:hover {
+        background: #2a3a6e;
+      }
+
+      .button-group-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 7px;
+        max-width: 1250px;
+        margin: 0 auto;
+      }
+
+      .manual-reveal-group {
+        display: inline-flex;
+        background: #0d1a3b;
+        padding: 3px;
+        border-radius: 8px;
+        border: 1px solid #233b7b;
+        gap: 3px;
+        align-items: center;
+      }
+
+      .manual-reveal-group.no-pts {
+        border-color: #607d8b;
+        background: #0e1e2d;
+      }
+
+      .manual-reveal-group span {
+        font-size: 0.78rem;
+        color: #9cbaff;
+        padding: 0 5px;
+      }
+
+      .manual-reveal-group.no-pts span {
+        color: #b0bec5;
+      }
+
+      .manual-reveal-group button {
+        padding: 5px 10px;
+        font-size: 0.82rem;
+        background: #182c61;
+        color: var(--gold-light);
+        border: 1px solid #35539e;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .manual-reveal-group.no-pts button {
+        background: #263238;
+        color: #cfd8dc;
+        border-color: #455a64;
+      }
+
+      .manual-reveal-group button:hover {
+        background: var(--gold-primary);
+        color: #0b1a42;
+      }
+
+      .manual-reveal-group.no-pts button:hover {
+        background: #78909c;
+        color: #fff;
+      }
+
+      /* MODAL VICTORY */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(4, 9, 28, 0.85);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-card {
+        background: linear-gradient(145deg, #0e1e4a, #060e26);
+        border: 3px solid var(--gold-primary);
+        border-radius: 20px;
+        padding: 35px 45px;
+        text-align: center;
+        max-width: 520px;
+        width: 90%;
+        box-shadow: 0 0 50px rgba(245, 176, 0, 0.5);
+        transform: scale(0.8);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .modal-backdrop.show .modal-card {
+        transform: scale(1);
+      }
+
+      .modal-card h2 {
+        font-size: 2.2rem;
+        color: var(--gold-light);
+        text-shadow: 0 0 15px var(--gold-primary);
+        margin-bottom: 20px;
+      }
+
+      .modal-scores {
+        display: flex;
+        justify-content: space-around;
+        margin: 25px 0;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+      }
+
+      .modal-score-item h4 {
+        color: #9cbaff;
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+
+      .modal-score-item div {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #fff;
+      }
+
+      .modal-winner-badge {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #00e676;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="logo-container">
+        <div class="badge-logo">NEW FAMILY 100</div>
+        <div class="header-titles">
+          <h1>PPKn Kelas IX</h1>
+          <p>Tema: Perubahan UUD NRI Tahun 1945</p>
         </div>
       </div>
-    </section>
+      <div class="question-tracker" id="trackerDisplay">Soal 1 dari 15</div>
+    </header>
 
-    <!-- PANEL TIM 2 -->
-    <section class="team-card" id="teamCard2">
-      <div class="points-bubble" id="bubble2">+100 POIN!</div>
-      <div class="team-label" id="nameDisplay2">TIM 2</div>
-      <div class="round-score-tag" id="roundScoreTag2">Poin Soal Ini: 0</div>
-      <div class="score-display" id="score2">0</div>
-      <div class="strikes-container">
-        <div class="strike-box" id="t2-x1">❌</div>
-        <div class="strike-box" id="t2-x2">❌</div>
-        <div class="strike-box" id="t2-x3">❌</div>
-      </div>
-    </section>
-  </main>
+    <!-- ARENA KUIS -->
+    <main class="stage">
+      <!-- PANEL TIM 1 -->
+      <section class="team-card active" id="teamCard1">
+        <div class="points-bubble" id="bubble1">+100 POIN!</div>
+        <div class="team-label" id="nameDisplay1">TIM 1</div>
+        <div class="round-score-tag" id="roundScoreTag1">Poin Soal Ini: 0</div>
+        <div class="score-display" id="score1">0</div>
+        <div class="strikes-container">
+          <div class="strike-box" id="t1-x1">❌</div>
+          <div class="strike-box" id="t1-x2">❌</div>
+          <div class="strike-box" id="t1-x3">❌</div>
+        </div>
+      </section>
 
-  <!-- OVERLAY STRIKE POPUP -->
-  <div class="overlay-strike" id="strikeOverlay">
-    <div class="giant-x">❌</div>
-  </div>
+      <!-- PAPAN SOAL DAN 5 JAWABAN -->
+      <section class="game-board">
+        <div class="question-box">
+          <h2 id="questionText">Memuat pertanyaan kuis...</h2>
+        </div>
 
-  <!-- CONTROL PANEL OPERATOR GURU -->
-  <footer class="control-panel">
-    <!-- BARIS INPUT -->
-    <div class="input-bar">
-      <input type="text" id="teacherInput" placeholder="Ketik kata kunci jawaban siswa di sini lalu tekan Enter..." autocomplete="off">
-      <button class="btn btn-gold" onclick="submitInputCheck()">Cek Jawaban</button>
+        <div class="survey-list">
+          <!-- 5 Card Jawaban Survei -->
+          <div class="survey-card" id="card-0" onclick="revealCard(0, true)">
+            <div class="card-face front">
+              <span class="number-chip">1</span>
+              <span class="points-label">100 Poin</span>
+            </div>
+            <div class="card-face back" id="card-back-0">
+              <span class="answer-text" id="ans-text-0">Jawaban 1</span>
+              <span class="answer-points">100</span>
+            </div>
+          </div>
+
+          <div class="survey-card" id="card-1" onclick="revealCard(1, true)">
+            <div class="card-face front">
+              <span class="number-chip">2</span>
+              <span class="points-label">80 Poin</span>
+            </div>
+            <div class="card-face back" id="card-back-1">
+              <span class="answer-text" id="ans-text-1">Jawaban 2</span>
+              <span class="answer-points">80</span>
+            </div>
+          </div>
+
+          <div class="survey-card" id="card-2" onclick="revealCard(2, true)">
+            <div class="card-face front">
+              <span class="number-chip">3</span>
+              <span class="points-label">60 Poin</span>
+            </div>
+            <div class="card-face back" id="card-back-2">
+              <span class="answer-text" id="ans-text-2">Jawaban 3</span>
+              <span class="answer-points">60</span>
+            </div>
+          </div>
+
+          <div class="survey-card" id="card-3" onclick="revealCard(3, true)">
+            <div class="card-face front">
+              <span class="number-chip">4</span>
+              <span class="points-label">40 Poin</span>
+            </div>
+            <div class="card-face back" id="card-back-3">
+              <span class="answer-text" id="ans-text-3">Jawaban 4</span>
+              <span class="answer-points">40</span>
+            </div>
+          </div>
+
+          <div class="survey-card" id="card-4" onclick="revealCard(4, true)">
+            <div class="card-face front">
+              <span class="number-chip">5</span>
+              <span class="points-label">20 Poin</span>
+            </div>
+            <div class="card-face back" id="card-back-4">
+              <span class="answer-text" id="ans-text-4">Jawaban 5</span>
+              <span class="answer-points">20</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL TIM 2 -->
+      <section class="team-card" id="teamCard2">
+        <div class="points-bubble" id="bubble2">+100 POIN!</div>
+        <div class="team-label" id="nameDisplay2">TIM 2</div>
+        <div class="round-score-tag" id="roundScoreTag2">Poin Soal Ini: 0</div>
+        <div class="score-display" id="score2">0</div>
+        <div class="strikes-container">
+          <div class="strike-box" id="t2-x1">❌</div>
+          <div class="strike-box" id="t2-x2">❌</div>
+          <div class="strike-box" id="t2-x3">❌</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- OVERLAY STRIKE POPUP -->
+    <div class="overlay-strike" id="strikeOverlay">
+      <div class="giant-x">❌</div>
     </div>
 
-    <!-- BARIS TOMBOL AKSI UTAMA & FITUR TAMBAHAN -->
-    <div class="button-group-wrap">
-      <button class="btn btn-blue" onclick="switchActiveTeam()">Ganti Tim Aktif</button>
-      <button class="btn btn-red" onclick="triggerMistake()">❌ Tambah Salah</button>
-      <button class="btn btn-dark" onclick="resetRoundStrikes()">Reset ❌ Babak</button>
-
-      <!-- REBUT POIN SOAL INI -->
-      <button class="btn btn-orange" onclick="stealRoundPoints()" title="Ambil poin soal berjalan dari lawan dan masukkan ke tim aktif">
-        🎯 Rebut Poin Soal Ini
-      </button>
-
-      <!-- MENU BARU: REBUT SEMUA/TOTAL AKUMULASI POIN LAWAN -->
-      <button class="btn btn-crimson" onclick="stealTotalPoints()" title="Ambil SEMUA poin akumulasi dari tim lawan dan serahkan ke tim aktif!">
-        ⚡ Rebut TOTAL Skor Lawan
-      </button>
-
-      <!-- BUKA JAWABAN TERTENTU DENGAN POIN -->
-      <div class="manual-reveal-group">
-        <span>+Poin:</span>
-        <button onclick="revealCard(0, true)">1</button>
-        <button onclick="revealCard(1, true)">2</button>
-        <button onclick="revealCard(2, true)">3</button>
-        <button onclick="revealCard(3, true)">4</button>
-        <button onclick="revealCard(4, true)">5</button>
+    <!-- CONTROL PANEL OPERATOR GURU -->
+    <footer class="control-panel">
+      <!-- BARIS INPUT -->
+      <div class="input-bar">
+        <input type="text" id="teacherInput" placeholder="Ketik kata kunci jawaban siswa di sini lalu tekan Enter..." autocomplete="off" />
+        <button class="btn btn-gold" onclick="submitInputCheck()">Cek Jawaban</button>
       </div>
 
-      <!-- BUKA MANUAL TANPA POIN -->
-      <div class="manual-reveal-group no-pts" title="Buka jawaban tertentu tanpa menambah poin ke tim manapun">
-        <span>0 Poin:</span>
-        <button onclick="revealCard(0, false)">1</button>
-        <button onclick="revealCard(1, false)">2</button>
-        <button onclick="revealCard(2, false)">3</button>
-        <button onclick="revealCard(3, false)">4</button>
-        <button onclick="revealCard(4, false)">5</button>
-      </div>
+      <!-- BARIS TOMBOL AKSI UTAMA & FITUR TAMBAHAN -->
+      <div class="button-group-wrap">
+        <button class="btn btn-blue" onclick="switchActiveTeam()">Ganti Tim Aktif</button>
+        <button class="btn btn-red" onclick="triggerMistake()">❌ Tambah Salah</button>
+        <button class="btn btn-dark" onclick="resetRoundStrikes()">Reset ❌ Babak</button>
 
-      <!-- BUKA SEMUA SISA JAWABAN (0 POIN) -->
-      <button class="btn btn-purple" onclick="revealAllRemainingCards(false)" title="Buka semua jawaban yang belum terbuka tanpa poin">
-        👁️ Buka Sisa Jawaban (0 Poin)
-      </button>
+        <!-- REBUT POIN SOAL INI -->
+        <button class="btn btn-orange" onclick="stealRoundPoints()" title="Ambil poin soal berjalan dari lawan dan masukkan ke tim aktif">🎯 Rebut Poin Soal Ini</button>
 
-      <button class="btn btn-blue" onclick="nextQuestion()">Soal Berikutnya ❯</button>
-      <button class="btn btn-dark" onclick="resetWholeGame()">Reset Game</button>
-    </div>
-  </footer>
+        <!-- MENU BARU: REBUT SEMUA/TOTAL AKUMULASI POIN LAWAN -->
+        <button class="btn btn-crimson" onclick="stealTotalPoints()" title="Ambil SEMUA poin akumulasi dari tim lawan dan serahkan ke tim aktif!">⚡ Rebut TOTAL Skor Lawan</button>
 
-  <!-- MODAL PEMENANG AKHIR PERMAINAN -->
-  <div class="modal-backdrop" id="victoryModal">
-    <div class="modal-card">
-      <h2>🎉 PERMAINAN SELESAI 🎉</h2>
-      <div class="modal-winner-badge" id="winnerText">TIM 1 MENANG!</div>
-      
-      <div class="modal-scores">
-        <div class="modal-score-item">
-          <h4 id="modalName1">TIM 1</h4>
-          <div id="modalScore1">0</div>
+        <!-- BUKA JAWABAN TERTENTU DENGAN POIN -->
+        <div class="manual-reveal-group">
+          <span>+Poin:</span>
+          <button onclick="revealCard(0, true)">1</button>
+          <button onclick="revealCard(1, true)">2</button>
+          <button onclick="revealCard(2, true)">3</button>
+          <button onclick="revealCard(3, true)">4</button>
+          <button onclick="revealCard(4, true)">5</button>
         </div>
-        <div class="modal-score-item">
-          <h4 id="modalName2">TIM 2</h4>
-          <div id="modalScore2">0</div>
+
+        <!-- BUKA MANUAL TANPA POIN -->
+        <div class="manual-reveal-group no-pts" title="Buka jawaban tertentu tanpa menambah poin ke tim manapun">
+          <span>0 Poin:</span>
+          <button onclick="revealCard(0, false)">1</button>
+          <button onclick="revealCard(1, false)">2</button>
+          <button onclick="revealCard(2, false)">3</button>
+          <button onclick="revealCard(3, false)">4</button>
+          <button onclick="revealCard(4, false)">5</button>
         </div>
+
+        <!-- BUKA SEMUA SISA JAWABAN (0 POIN) -->
+        <button class="btn btn-purple" onclick="revealAllRemainingCards(false)" title="Buka semua jawaban yang belum terbuka tanpa poin">👁️ Buka Sisa Jawaban (0 Poin)</button>
+
+        <button class="btn btn-blue" onclick="nextQuestion()">Soal Berikutnya ❯</button>
+        <button class="btn btn-dark" onclick="resetWholeGame()">Reset Game</button>
       </div>
+    </footer>
 
-      <p style="color:#9cbaff; margin-bottom: 20px;" id="modalTotalPts">Total Poin Terkumpul: 0</p>
-      <button class="btn btn-gold" onclick="resetWholeGame()" style="padding: 12px 25px; font-size: 1.1rem;">Main Lagi Dari Awal</button>
+    <!-- MODAL PEMENANG AKHIR PERMAINAN -->
+    <div class="modal-backdrop" id="victoryModal">
+      <div class="modal-card">
+        <h2>🎉 PERMAINAN SELESAI 🎉</h2>
+        <div class="modal-winner-badge" id="winnerText">TIM 1 MENANG!</div>
+
+        <div class="modal-scores">
+          <div class="modal-score-item">
+            <h4 id="modalName1">TIM 1</h4>
+            <div id="modalScore1">0</div>
+          </div>
+          <div class="modal-score-item">
+            <h4 id="modalName2">TIM 2</h4>
+            <div id="modalScore2">0</div>
+          </div>
+        </div>
+
+        <p style="color: #9cbaff; margin-bottom: 20px" id="modalTotalPts">Total Poin Terkumpul: 0</p>
+        <button class="btn btn-gold" onclick="resetWholeGame()" style="padding: 12px 25px; font-size: 1.1rem">Main Lagi Dari Awal</button>
+      </div>
     </div>
-  </div>
 
-  <!-- JAVASCRIPT & LOGIKA SISTEM -->
-  <script>
-    /* =========================================================
+    <!-- JAVASCRIPT & LOGIKA SISTEM -->
+    <script>
+      /* =========================================================
        1. WEB AUDIO API SYNTHESIZER
        ========================================================= */
-    class SoundEngine {
-      constructor() {
-        this.ctx = null;
-      }
-      init() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          this.ctx = new AudioContext();
+      class SoundEngine {
+        constructor() {
+          this.ctx = null;
         }
-        if (this.ctx.state === 'suspended') {
-          this.ctx.resume();
+        init() {
+          if (!this.ctx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioContext();
+          }
+          if (this.ctx.state === "suspended") {
+            this.ctx.resume();
+          }
+        }
+        playCorrect() {
+          this.init();
+          const now = this.ctx.currentTime;
+          const freqs = [523.25, 659.25, 783.99, 1046.5];
+          freqs.forEach((f, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(f, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.25, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.4);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.45);
+          });
+        }
+        playWrong() {
+          this.init();
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(130.81, now);
+          osc.frequency.linearRampToValueAtTime(110.0, now + 0.35);
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.42);
+        }
+        playSteal() {
+          this.init();
+          const now = this.ctx.currentTime;
+          const freqs = [329.63, 440.0, 554.37, 659.25, 880.0];
+          freqs.forEach((f, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = "square";
+            osc.frequency.setValueAtTime(f, now + idx * 0.06);
+            gain.gain.setValueAtTime(0.18, now + idx * 0.06);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.3);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.06);
+            osc.stop(now + idx * 0.06 + 0.35);
+          });
+        }
+        playBigSteal() {
+          this.init();
+          const now = this.ctx.currentTime;
+          // Nada glissando spektakuler untuk rebutan poin besar
+          const freqs = [220, 277.18, 329.63, 440, 554.37, 659.25, 880, 1108.73];
+          freqs.forEach((f, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = "sawtooth";
+            osc.frequency.setValueAtTime(f, now + idx * 0.07);
+            gain.gain.setValueAtTime(0.22, now + idx * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.35);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.07);
+            osc.stop(now + idx * 0.07 + 0.4);
+          });
+        }
+        playVictory() {
+          this.init();
+          const notes = [
+            { f: 523.25, d: 0.15 },
+            { f: 659.25, d: 0.15 },
+            { f: 783.99, d: 0.15 },
+            { f: 1046.5, d: 0.4 },
+            { f: 880.0, d: 0.15 },
+            { f: 1046.5, d: 0.6 },
+          ];
+          let t = this.ctx.currentTime;
+          notes.forEach((note) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(note.f, t);
+            gain.gain.setValueAtTime(0.3, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + note.d);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + note.d + 0.05);
+            t += note.d + 0.04;
+          });
         }
       }
-      playCorrect() {
-        this.init();
-        const now = this.ctx.currentTime;
-        const freqs = [523.25, 659.25, 783.99, 1046.50];
-        freqs.forEach((f, idx) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(f, now + idx * 0.08);
-          gain.gain.setValueAtTime(0.25, now + idx * 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.4);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(now + idx * 0.08);
-          osc.stop(now + idx * 0.08 + 0.45);
-        });
-      }
-      playWrong() {
-        this.init();
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(130.81, now);
-        osc.frequency.linearRampToValueAtTime(110.00, now + 0.35);
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.42);
-      }
-      playSteal() {
-        this.init();
-        const now = this.ctx.currentTime;
-        const freqs = [329.63, 440.0, 554.37, 659.25, 880.0];
-        freqs.forEach((f, idx) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'square';
-          osc.frequency.setValueAtTime(f, now + idx * 0.06);
-          gain.gain.setValueAtTime(0.18, now + idx * 0.06);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.3);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(now + idx * 0.06);
-          osc.stop(now + idx * 0.06 + 0.35);
-        });
-      }
-      playBigSteal() {
-        this.init();
-        const now = this.ctx.currentTime;
-        // Nada glissando spektakuler untuk rebutan poin besar
-        const freqs = [220, 277.18, 329.63, 440, 554.37, 659.25, 880, 1108.73];
-        freqs.forEach((f, idx) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(f, now + idx * 0.07);
-          gain.gain.setValueAtTime(0.22, now + idx * 0.07);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.35);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(now + idx * 0.07);
-          osc.stop(now + idx * 0.07 + 0.4);
-        });
-      }
-      playVictory() {
-        this.init();
-        const notes = [
-          { f: 523.25, d: 0.15 }, { f: 659.25, d: 0.15 }, { f: 783.99, d: 0.15 },
-          { f: 1046.50, d: 0.4 }, { f: 880.00, d: 0.15 }, { f: 1046.50, d: 0.6 }
-        ];
-        let t = this.ctx.currentTime;
-        notes.forEach(note => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(note.f, t);
-          gain.gain.setValueAtTime(0.3, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + note.d);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(t);
-          osc.stop(t + note.d + 0.05);
-          t += note.d + 0.04;
-        });
-      }
-    }
-    const audioSys = new SoundEngine();
+      const audioSys = new SoundEngine();
 
-    /* =========================================================
+      /* =========================================================
        2. BANK SOAL LENGKAP (15 SOAL PPKn KELAS IX)
        ========================================================= */
-    const questionBank = [
-      {
-        question: "Sebutkan alasan dilakukannya amandemen UUD NRI Tahun 1945 sebelum Reformasi!",
-        answers: [
-          { text: "Kekuasaan Presiden terlalu dominan", points: 100, keywords: ["presiden dominan", "kekuasaan presiden", "otoriter", "presiden terlalu kuat", "sentralistik", "terlalu dominan"] },
-          { text: "Jaminan HAM masih sangat minim", points: 80, keywords: ["ham", "hak asasi", "ham minim", "jaminan ham", "kurang ham", "pelanggaran ham"] },
-          { text: "Banyak pasal bermakna ganda", points: 60, keywords: ["makna ganda", "pasal ganda", "multitafsir", "pasal fleksibel", "pasal multitafsir", "bermakna ganda"] },
-          { text: "Kekuasaan tertinggi terpusat di MPR", points: 40, keywords: ["terpusat di mpr", "mpr tertinggi", "kekuasaan mpr", "mpr lembaga tertinggi", "mandataris mpr"] },
-          { text: "UUD 1945 awalnya bersifat sementara", points: 20, keywords: ["sementara", "bersifat sementara", "kilat", "darurat", "uud sementara", "rancangan sementara"] }
-        ]
-      },
-      {
-        question: "Sebutkan syarat perubahan UUD berdasarkan Pasal 37 UUD NRI Tahun 1945!",
-        answers: [
-          { text: "Bentuk NKRI tidak dapat diubah", points: 100, keywords: ["nkri tidak dapat diubah", "bentuk nkri", "nkri tetap", "nkri harga mati", "bentuk negara", "tidak diubah"] },
-          { text: "Diusulkan minimal sepertiga anggota MPR", points: 80, keywords: ["sepertiga mpr", "1/3", "sepertiga anggota", "usul 1/3", "minimal sepertiga"] },
-          { text: "Sidang dihadiri dua pertiga anggota", points: 60, keywords: ["dua pertiga", "2/3 anggota", "sidang 2/3", "kuorum 2/3", "dihadiri 2/3"] },
-          { text: "Disetujui lima puluh persen plus satu", points: 40, keywords: ["50% plus satu", "50%+1", "lima puluh persen plus satu", "setengah plus satu", "putusan 50%"] },
-          { text: "Usulan diajukan secara tertulis", points: 20, keywords: ["tertulis", "secara tertulis", "surat tertulis", "alasan tertulis", "diajukan tertulis"] }
-        ]
-      },
-      {
-        question: "Sebutkan kesepakatan dasar MPR dalam melakukan amandemen UUD NRI 1945!",
-        answers: [
-          { text: "Tidak mengubah Pembukaan UUD 1945", points: 100, keywords: ["tidak mengubah pembukaan", "pembukaan tetap", "pembukaan uud", "pertahankan pembukaan", "preambule"] },
-          { text: "Tetap mempertahankan bentuk NKRI", points: 80, keywords: ["mempertahankan nkri", "nkri", "bentuk kesatuan", "negara kesatuan", "pertahankan nkri"] },
-          { text: "Mempertegas sistem presidensial", points: 60, keywords: ["presidensial", "sistem presidensial", "mempertegas presidensial", "presidensil"] },
-          { text: "Meniadakan bagian Penjelasan UUD", points: 40, keywords: ["meniadakan penjelasan", "penjelasan dihapus", "hapus penjelasan", "masuk pasal", "batang tubuh"] },
-          { text: "Perubahan dilakukan secara adendum", points: 20, keywords: ["adendum", "secara adendum", "addendum", "naskah asli dipertahankan", "lampiran adendum"] }
-        ]
-      },
-      {
-        question: "Sebutkan pemicu gerakan Reformasi 1998 yang mendorong perubahan UUD!",
-        answers: [
-          { text: "Lengsernya Presiden Soeharto", points: 100, keywords: ["soeharto", "presiden soeharto", "lengser", "mundurnya soeharto", "kejatuhan orde baru", "orba runtuh"] },
-          { text: "Tuntutan pemerintahan bebas KKN", points: 80, keywords: ["kkn", "bebas kkn", "korupsi", "kolusi", "nepotisme", "tuntutan kkn"] },
-          { text: "Krisis moneter dan krisis ekonomi", points: 60, keywords: ["krismon", "krisis moneter", "krisis ekonomi", "rupiah anjlok", "inflasi"] },
-          { text: "Tuntutan terwujudnya demokrasi sejati", points: 40, keywords: ["demokrasi", "demokrasi sejati", "kebebasan", "demokratisasi", "tuntutan demokrasi"] },
-          { text: "Demonstrasi mahasiswa dan masyarakat", points: 20, keywords: ["demonstrasi", "mahasiswa", "gerakan mahasiswa", "demo mahasiswa", "rakyat demo"] }
-        ]
-      },
-      {
-        question: "Sebutkan prinsip mendasar dari konsep amandemen konstitusi di Indonesia!",
-        answers: [
-          { text: "Bukan mengganti UUD lama", points: 100, keywords: ["bukan mengganti uud", "tidak ganti uud", "bukan uud baru", "bukan konstitusi baru"] },
-          { text: "Menyempurnakan pasal sesuai zaman", points: 80, keywords: ["menyempurnakan", "sesuai zaman", "perkembangan zaman", "revisi pasal", "kontekstual"] },
-          { text: "Bukan untuk membubarkan negara", points: 60, keywords: ["tidak membubarkan negara", "bukan bubarkan negara", "keutuhan negara", "bukan disintegrasi"] },
-          { text: "Kewenangan penuh di tangan MPR", points: 40, keywords: ["kewenangan mpr", "tangan mpr", "wewenang mpr", "hak mpr", "tugas mpr"] },
-          { text: "Nama konstitusi tetap dipertahankan", points: 20, keywords: ["nama konstitusi", "nama tetap", "tetap uud 1945", "nama uud 1945"] }
-        ]
-      },
-      {
-        question: "Sebutkan fokus materi penting pada Perubahan Pertama tahun 1999!",
-        answers: [
-          { text: "Pembatasan masa jabatan Presiden", points: 100, keywords: ["masa jabatan presiden", "pembatasan presiden", "dua periode", "5 tahun dua kali", "jabatan presiden"] },
-          { text: "Penguatan fungsi legislasi DPR", points: 80, keywords: ["fungsi legislasi", "dpr", "legislasi dpr", "dpr pembuat undang-undang", "kuasa dpr"] },
-          { text: "Pembatasan pengangkatan duta dan konsul", points: 60, keywords: ["duta dan konsul", "duta konsul", "angkat duta", "pertimbangan dpr duta"] },
-          { text: "Pertimbangan MA untuk pemberian grasi", points: 40, keywords: ["grasi", "ma grasi", "pertimbangan ma", "grasi rehabilitasi", "mahkamah agung grasi"] },
-          { text: "Pertimbangan DPR untuk pemberian amnesti", points: 20, keywords: ["amnesti", "dpr amnesti", "amnesti abolisi", "pertimbangan dpr", "amnesti dpr"] }
-        ]
-      },
-      {
-        question: "Sebutkan materi besar yang disahkan pada Perubahan Kedua tahun 2000!",
-        answers: [
-          { text: "Jaminan rinci Hak Asasi Manusia", points: 100, keywords: ["hak asasi manusia", "ham", "bab ham", "jaminan ham", "pasal ham"] },
-          { text: "Penataan pelaksanaan Otonomi Daerah", points: 80, keywords: ["otonomi daerah", "pemda", "otda", "pemerintah daerah", "desentralisasi"] },
-          { text: "Pengaturan simbol dan identitas negara", points: 60, keywords: ["simbol negara", "identitas negara", "lambang negara", "atribut negara"] },
-          { text: "Penegasan fungsi TNI dan Polri", points: 40, keywords: ["tni polri", "fungsi tni", "polri", "pemisahan tni polri", "pertahanan keamanan"] },
-          { text: "Penegasan wilayah kepulauan Nusantara", points: 20, keywords: ["wilayah nusantara", "wilayah negara", "kepulauan nusantara", "batas wilayah", "nkri kepulauan"] }
-        ]
-      },
-      {
-        question: "Sebutkan lambang atau simbol negara yang diatur dalam Perubahan Kedua!",
-        answers: [
-          { text: "Bendera Sang Merah Putih", points: 100, keywords: ["bendera", "merah putih", "sang merah putih", "sang saka"] },
-          { text: "Bahasa resmi Bahasa Indonesia", points: 80, keywords: ["bahasa", "bahasa indonesia", "bahasa resmi", "bahasa persatuan"] },
-          { text: "Lambang negara Garuda Pancasila", points: 60, keywords: ["garuda", "garuda pancasila", "lambang garuda", "burung garuda"] },
-          { text: "Lagu kebangsaan Indonesia Raya", points: 40, keywords: ["lagu kebangsaan", "indonesia raya", "lagu indonesia raya"] },
-          { text: "Semboyan Bhinneka Tunggal Ika", points: 20, keywords: ["semboyan", "bhinneka tunggal ika", "bhinneka", "berbeda-beda tetapi satu"] }
-        ]
-      },
-      {
-        question: "Sebutkan hal baru yang disahkan pada Perubahan Ketiga tahun 2001!",
-        answers: [
-          { text: "Pemilihan Presiden langsung oleh rakyat", points: 100, keywords: ["pilpres langsung", "presiden langsung", "pilihan rakyat", "presiden dipilih rakyat", "pilpres"] },
-          { text: "Pembentukan Mahkamah Konstitusi", points: 80, keywords: ["mahkamah konstitusi", "mk", "bentuk mk", "pembentukan mk"] },
-          { text: "Pembentukan Dewan Perwakilan Daerah", points: 60, keywords: ["dpd", "dewan perwakilan daerah", "bentuk dpd", "senat"] },
-          { text: "Pembentukan Komisi Yudisial", points: 40, keywords: ["komisi yudisial", "ky", "bentuk ky"] },
-          { text: "Penegasan Indonesia adalah negara hukum", points: 20, keywords: ["negara hukum", "rechtsstaat", "supremasi hukum", "indonesia negara hukum"] }
-        ]
-      },
-      {
-        question: "Sebutkan materi utama yang diatur pada Perubahan Keempat tahun 2002!",
-        answers: [
-          { text: "Alokasi anggaran pendidikan minimal 20%", points: 100, keywords: ["anggaran pendidikan", "pendidikan 20%", "dana pendidikan", "20 persen", "minimal 20%"] },
-          { text: "Penghapusan DPA diganti Wantimpres", points: 80, keywords: ["dpa dihapus", "penghapusan dpa", "wantimpres", "dewan pertimbangan agung", "dpa"] },
-          { text: "Pengembangan Sistem Jaminan Sosial", points: 60, keywords: ["sistem jaminan sosial", "jaminan sosial", "bpjs", "kesejahteraan sosial"] },
-          { text: "MPR terdiri dari DPR plus DPD", points: 40, keywords: ["mpr terdiri dpr dpd", "dpr dan dpd", "anggota mpr", "dpr plus dpd"] },
-          { text: "Pengaturan pasal Aturan Peralihan", points: 20, keywords: ["aturan peralihan", "peralihan", "aturan tambahan", "pasal peralihan"] }
-        ]
-      },
-      {
-        question: "Sebutkan manfaat nyata perubahan UUD 1945 bagi sistem ketatanegaraan!",
-        answers: [
-          { text: "Adanya mekanisme checks and balances", points: 100, keywords: ["checks and balances", "pengawasan dan keseimbangan", "saling mengawasi", "keseimbangan kekuasaan"] },
-          { text: "Kedaulatan berada di tangan rakyat", points: 80, keywords: ["kedaulatan rakyat", "tangan rakyat", "demokrasi rakyat", "rakyat berdaulat"] },
-          { text: "Rakyat bebas memilih pemimpin langsung", points: 60, keywords: ["memilih pemimpin langsung", "pemilu langsung", "pilih presiden langsung", "bebas memilih"] },
-          { text: "Penegakan supremasi hukum yang tegas", points: 40, keywords: ["supremasi hukum", "tegaknya hukum", "kepastian hukum", "hukum ditegakkan"] },
-          { text: "Seluruh lembaga negara sejajar", points: 20, keywords: ["lembaga sejajar", "sejajar", "tidak ada lembaga tertinggi", "lembaga setara", "horizontal"] }
-        ]
-      },
-      {
-        question: "Sebutkan lembaga dan pihak yang terlibat proses pemberhentian Presiden!",
-        answers: [
-          { text: "Majelis Permusyawaratan Rakyat", points: 100, keywords: ["mpr", "majelis permusyawaratan rakyat", "sidang mpr"] },
-          { text: "Mahkamah Konstitusi", points: 80, keywords: ["mk", "mahkamah konstitusi", "sidang mk", "putusan mk"] },
-          { text: "Dewan Perwakilan Rakyat", points: 60, keywords: ["dpr", "dewan perwakilan rakyat", "usulan dpr"] },
-          { text: "Presiden", points: 40, keywords: ["presiden", "kepala negara", "pihak presiden"] },
-          { text: "Wakil Presiden", points: 20, keywords: ["wapres", "wakil presiden", "pihak wakil presiden"] }
-        ]
-      },
-      {
-        question: "Sebutkan hak asasi warga negara yang diatur dalam Pasal 28A–28J!",
-        answers: [
-          { text: "Hak hidup dan mempertahankan kehidupan", points: 100, keywords: ["hak hidup", "hidup", "mempertahankan hidup", "hidup layak"] },
-          { text: "Hak berserikat dan berkumpul", points: 80, keywords: ["berserikat", "berkumpul", "organisasi", "berpendapat", "berserikat berkumpul"] },
-          { text: "Hak beragama dan berkeyakinan", points: 60, keywords: ["beragama", "agama", "keyakinan", "beribadah", "kebebasan agama"] },
-          { text: "Hak memperoleh pendidikan yang layak", points: 40, keywords: ["pendidikan", "hak pendidikan", "sekolah", "menuntut ilmu", "pendidikan layak"] },
-          { text: "Hak bebas dari perlakuan diskriminasi", points: 20, keywords: ["bebas diskriminasi", "anti diskriminasi", "tidak diskriminatif", "diskriminasi"] }
-        ]
-      },
-      {
-        question: "Sebutkan asas penyelenggaraan Pemilu yang ditegaskan dalam UUD 1945!",
-        answers: [
-          { text: "Langsung", points: 100, keywords: ["langsung", "luber"] },
-          { text: "Umum", points: 80, keywords: ["umum"] },
-          { text: "Bebas dan rahasia", points: 60, keywords: ["bebas", "rahasia", "bebas rahasia", "luber jurdil"] },
-          { text: "Jujur", points: 40, keywords: ["jujur", "jurdil"] },
-          { text: "Adil", points: 20, keywords: ["adil"] }
-        ]
-      },
-      {
-        question: "Sebutkan perbedaan tata negara setelah amandemen UUD 1945!",
-        answers: [
-          { text: "Presiden dipilih langsung oleh rakyat", points: 100, keywords: ["presiden dipilih rakyat", "pilpres langsung", "presiden langsung", "pemilu presiden"] },
-          { text: "Mahkamah Konstitusi resmi dibentuk", points: 80, keywords: ["mk dibentuk", "ada mk", "adanya mk", "mahkamah konstitusi dibentuk", "lembaga mk"] },
-          { text: "Kedaulatan bukan lagi milik MPR", points: 60, keywords: ["bukan milik mpr", "kedaulatan rakyat", "mpr bukan tertinggi", "mpr tidak lagi tertinggi"] },
-          { text: "Jabatan Presiden maksimal dua periode", points: 40, keywords: ["dua periode", "maksimal 2 periode", "pembatasan periode", "2 kali masa jabatan"] },
-          { text: "Lembaga DPA resmi dihapuskan", points: 20, keywords: ["dpa dihapus", "hapus dpa", "dpa dibubarkan", "hilangnya dpa"] }
-        ]
-      }
-    ];
+      const questionBank = [
+        {
+          question: "Sebutkan alasan dilakukannya amandemen UUD NRI Tahun 1945 sebelum Reformasi!",
+          answers: [
+            { text: "Kekuasaan Presiden terlalu dominan", points: 100, keywords: ["presiden dominan", "kekuasaan presiden", "otoriter", "presiden terlalu kuat", "sentralistik", "terlalu dominan"] },
+            { text: "Jaminan HAM masih sangat minim", points: 80, keywords: ["ham", "hak asasi", "ham minim", "jaminan ham", "kurang ham", "pelanggaran ham"] },
+            { text: "Banyak pasal bermakna ganda", points: 60, keywords: ["makna ganda", "pasal ganda", "multitafsir", "pasal fleksibel", "pasal multitafsir", "bermakna ganda"] },
+            { text: "Kekuasaan tertinggi terpusat di MPR", points: 40, keywords: ["terpusat di mpr", "mpr tertinggi", "kekuasaan mpr", "mpr lembaga tertinggi", "mandataris mpr"] },
+            { text: "UUD 1945 awalnya bersifat sementara", points: 20, keywords: ["sementara", "bersifat sementara", "kilat", "darurat", "uud sementara", "rancangan sementara"] },
+          ],
+        },
+        {
+          question: "Sebutkan syarat perubahan UUD berdasarkan Pasal 37 UUD NRI Tahun 1945!",
+          answers: [
+            { text: "Bentuk NKRI tidak dapat diubah", points: 100, keywords: ["nkri tidak dapat diubah", "bentuk nkri", "nkri tetap", "nkri harga mati", "bentuk negara", "tidak diubah"] },
+            { text: "Diusulkan minimal sepertiga anggota MPR", points: 80, keywords: ["sepertiga mpr", "1/3", "sepertiga anggota", "usul 1/3", "minimal sepertiga"] },
+            { text: "Sidang dihadiri dua pertiga anggota", points: 60, keywords: ["dua pertiga", "2/3 anggota", "sidang 2/3", "kuorum 2/3", "dihadiri 2/3"] },
+            { text: "Disetujui lima puluh persen plus satu", points: 40, keywords: ["50% plus satu", "50%+1", "lima puluh persen plus satu", "setengah plus satu", "putusan 50%"] },
+            { text: "Usulan diajukan secara tertulis", points: 20, keywords: ["tertulis", "secara tertulis", "surat tertulis", "alasan tertulis", "diajukan tertulis"] },
+          ],
+        },
+        {
+          question: "Sebutkan kesepakatan dasar MPR dalam melakukan amandemen UUD NRI 1945!",
+          answers: [
+            { text: "Tidak mengubah Pembukaan UUD 1945", points: 100, keywords: ["tidak mengubah pembukaan", "pembukaan tetap", "pembukaan uud", "pertahankan pembukaan", "preambule"] },
+            { text: "Tetap mempertahankan bentuk NKRI", points: 80, keywords: ["mempertahankan nkri", "nkri", "bentuk kesatuan", "negara kesatuan", "pertahankan nkri"] },
+            { text: "Mempertegas sistem presidensial", points: 60, keywords: ["presidensial", "sistem presidensial", "mempertegas presidensial", "presidensil"] },
+            { text: "Meniadakan bagian Penjelasan UUD", points: 40, keywords: ["meniadakan penjelasan", "penjelasan dihapus", "hapus penjelasan", "masuk pasal", "batang tubuh"] },
+            { text: "Perubahan dilakukan secara adendum", points: 20, keywords: ["adendum", "secara adendum", "addendum", "naskah asli dipertahankan", "lampiran adendum"] },
+          ],
+        },
+        {
+          question: "Sebutkan pemicu gerakan Reformasi 1998 yang mendorong perubahan UUD!",
+          answers: [
+            { text: "Lengsernya Presiden Soeharto", points: 100, keywords: ["soeharto", "presiden soeharto", "lengser", "mundurnya soeharto", "kejatuhan orde baru", "orba runtuh"] },
+            { text: "Tuntutan pemerintahan bebas KKN", points: 80, keywords: ["kkn", "bebas kkn", "korupsi", "kolusi", "nepotisme", "tuntutan kkn"] },
+            { text: "Krisis moneter dan krisis ekonomi", points: 60, keywords: ["krismon", "krisis moneter", "krisis ekonomi", "rupiah anjlok", "inflasi"] },
+            { text: "Tuntutan terwujudnya demokrasi sejati", points: 40, keywords: ["demokrasi", "demokrasi sejati", "kebebasan", "demokratisasi", "tuntutan demokrasi"] },
+            { text: "Demonstrasi mahasiswa dan masyarakat", points: 20, keywords: ["demonstrasi", "mahasiswa", "gerakan mahasiswa", "demo mahasiswa", "rakyat demo"] },
+          ],
+        },
+        {
+          question: "Sebutkan prinsip mendasar dari konsep amandemen konstitusi di Indonesia!",
+          answers: [
+            { text: "Bukan mengganti UUD lama", points: 100, keywords: ["bukan mengganti uud", "tidak ganti uud", "bukan uud baru", "bukan konstitusi baru"] },
+            { text: "Menyempurnakan pasal sesuai zaman", points: 80, keywords: ["menyempurnakan", "sesuai zaman", "perkembangan zaman", "revisi pasal", "kontekstual"] },
+            { text: "Bukan untuk membubarkan negara", points: 60, keywords: ["tidak membubarkan negara", "bukan bubarkan negara", "keutuhan negara", "bukan disintegrasi"] },
+            { text: "Kewenangan penuh di tangan MPR", points: 40, keywords: ["kewenangan mpr", "tangan mpr", "wewenang mpr", "hak mpr", "tugas mpr"] },
+            { text: "Nama konstitusi tetap dipertahankan", points: 20, keywords: ["nama konstitusi", "nama tetap", "tetap uud 1945", "nama uud 1945"] },
+          ],
+        },
+        {
+          question: "Sebutkan fokus materi penting pada Perubahan Pertama tahun 1999!",
+          answers: [
+            { text: "Pembatasan masa jabatan Presiden", points: 100, keywords: ["masa jabatan presiden", "pembatasan presiden", "dua periode", "5 tahun dua kali", "jabatan presiden"] },
+            { text: "Penguatan fungsi legislasi DPR", points: 80, keywords: ["fungsi legislasi", "dpr", "legislasi dpr", "dpr pembuat undang-undang", "kuasa dpr"] },
+            { text: "Pembatasan pengangkatan duta dan konsul", points: 60, keywords: ["duta dan konsul", "duta konsul", "angkat duta", "pertimbangan dpr duta"] },
+            { text: "Pertimbangan MA untuk pemberian grasi", points: 40, keywords: ["grasi", "ma grasi", "pertimbangan ma", "grasi rehabilitasi", "mahkamah agung grasi"] },
+            { text: "Pertimbangan DPR untuk pemberian amnesti", points: 20, keywords: ["amnesti", "dpr amnesti", "amnesti abolisi", "pertimbangan dpr", "amnesti dpr"] },
+          ],
+        },
+        {
+          question: "Sebutkan materi besar yang disahkan pada Perubahan Kedua tahun 2000!",
+          answers: [
+            { text: "Jaminan rinci Hak Asasi Manusia", points: 100, keywords: ["hak asasi manusia", "ham", "bab ham", "jaminan ham", "pasal ham"] },
+            { text: "Penataan pelaksanaan Otonomi Daerah", points: 80, keywords: ["otonomi daerah", "pemda", "otda", "pemerintah daerah", "desentralisasi"] },
+            { text: "Pengaturan simbol dan identitas negara", points: 60, keywords: ["simbol negara", "identitas negara", "lambang negara", "atribut negara"] },
+            { text: "Penegasan fungsi TNI dan Polri", points: 40, keywords: ["tni polri", "fungsi tni", "polri", "pemisahan tni polri", "pertahanan keamanan"] },
+            { text: "Penegasan wilayah kepulauan Nusantara", points: 20, keywords: ["wilayah nusantara", "wilayah negara", "kepulauan nusantara", "batas wilayah", "nkri kepulauan"] },
+          ],
+        },
+        {
+          question: "Sebutkan lambang atau simbol negara yang diatur dalam Perubahan Kedua!",
+          answers: [
+            { text: "Bendera Sang Merah Putih", points: 100, keywords: ["bendera", "merah putih", "sang merah putih", "sang saka"] },
+            { text: "Bahasa resmi Bahasa Indonesia", points: 80, keywords: ["bahasa", "bahasa indonesia", "bahasa resmi", "bahasa persatuan"] },
+            { text: "Lambang negara Garuda Pancasila", points: 60, keywords: ["garuda", "garuda pancasila", "lambang garuda", "burung garuda"] },
+            { text: "Lagu kebangsaan Indonesia Raya", points: 40, keywords: ["lagu kebangsaan", "indonesia raya", "lagu indonesia raya"] },
+            { text: "Semboyan Bhinneka Tunggal Ika", points: 20, keywords: ["semboyan", "bhinneka tunggal ika", "bhinneka", "berbeda-beda tetapi satu"] },
+          ],
+        },
+        {
+          question: "Sebutkan hal baru yang disahkan pada Perubahan Ketiga tahun 2001!",
+          answers: [
+            { text: "Pemilihan Presiden langsung oleh rakyat", points: 100, keywords: ["pilpres langsung", "presiden langsung", "pilihan rakyat", "presiden dipilih rakyat", "pilpres"] },
+            { text: "Pembentukan Mahkamah Konstitusi", points: 80, keywords: ["mahkamah konstitusi", "mk", "bentuk mk", "pembentukan mk"] },
+            { text: "Pembentukan Dewan Perwakilan Daerah", points: 60, keywords: ["dpd", "dewan perwakilan daerah", "bentuk dpd", "senat"] },
+            { text: "Pembentukan Komisi Yudisial", points: 40, keywords: ["komisi yudisial", "ky", "bentuk ky"] },
+            { text: "Penegasan Indonesia adalah negara hukum", points: 20, keywords: ["negara hukum", "rechtsstaat", "supremasi hukum", "indonesia negara hukum"] },
+          ],
+        },
+        {
+          question: "Sebutkan materi utama yang diatur pada Perubahan Keempat tahun 2002!",
+          answers: [
+            { text: "Alokasi anggaran pendidikan minimal 20%", points: 100, keywords: ["anggaran pendidikan", "pendidikan 20%", "dana pendidikan", "20 persen", "minimal 20%"] },
+            { text: "Penghapusan DPA diganti Wantimpres", points: 80, keywords: ["dpa dihapus", "penghapusan dpa", "wantimpres", "dewan pertimbangan agung", "dpa"] },
+            { text: "Pengembangan Sistem Jaminan Sosial", points: 60, keywords: ["sistem jaminan sosial", "jaminan sosial", "bpjs", "kesejahteraan sosial"] },
+            { text: "MPR terdiri dari DPR plus DPD", points: 40, keywords: ["mpr terdiri dpr dpd", "dpr dan dpd", "anggota mpr", "dpr plus dpd"] },
+            { text: "Pengaturan pasal Aturan Peralihan", points: 20, keywords: ["aturan peralihan", "peralihan", "aturan tambahan", "pasal peralihan"] },
+          ],
+        },
+        {
+          question: "Sebutkan manfaat nyata perubahan UUD 1945 bagi sistem ketatanegaraan!",
+          answers: [
+            { text: "Adanya mekanisme checks and balances", points: 100, keywords: ["checks and balances", "pengawasan dan keseimbangan", "saling mengawasi", "keseimbangan kekuasaan"] },
+            { text: "Kedaulatan berada di tangan rakyat", points: 80, keywords: ["kedaulatan rakyat", "tangan rakyat", "demokrasi rakyat", "rakyat berdaulat"] },
+            { text: "Rakyat bebas memilih pemimpin langsung", points: 60, keywords: ["memilih pemimpin langsung", "pemilu langsung", "pilih presiden langsung", "bebas memilih"] },
+            { text: "Penegakan supremasi hukum yang tegas", points: 40, keywords: ["supremasi hukum", "tegaknya hukum", "kepastian hukum", "hukum ditegakkan"] },
+            { text: "Seluruh lembaga negara sejajar", points: 20, keywords: ["lembaga sejajar", "sejajar", "tidak ada lembaga tertinggi", "lembaga setara", "horizontal"] },
+          ],
+        },
+        {
+          question: "Sebutkan lembaga dan pihak yang terlibat proses pemberhentian Presiden!",
+          answers: [
+            { text: "Majelis Permusyawaratan Rakyat", points: 100, keywords: ["mpr", "majelis permusyawaratan rakyat", "sidang mpr"] },
+            { text: "Mahkamah Konstitusi", points: 80, keywords: ["mk", "mahkamah konstitusi", "sidang mk", "putusan mk"] },
+            { text: "Dewan Perwakilan Rakyat", points: 60, keywords: ["dpr", "dewan perwakilan rakyat", "usulan dpr"] },
+            { text: "Presiden", points: 40, keywords: ["presiden", "kepala negara", "pihak presiden"] },
+            { text: "Wakil Presiden", points: 20, keywords: ["wapres", "wakil presiden", "pihak wakil presiden"] },
+          ],
+        },
+        {
+          question: "Sebutkan hak asasi warga negara yang diatur dalam Pasal 28A–28J!",
+          answers: [
+            { text: "Hak hidup dan mempertahankan kehidupan", points: 100, keywords: ["hak hidup", "hidup", "mempertahankan hidup", "hidup layak"] },
+            { text: "Hak berserikat dan berkumpul", points: 80, keywords: ["berserikat", "berkumpul", "organisasi", "berpendapat", "berserikat berkumpul"] },
+            { text: "Hak beragama dan berkeyakinan", points: 60, keywords: ["beragama", "agama", "keyakinan", "beribadah", "kebebasan agama"] },
+            { text: "Hak memperoleh pendidikan yang layak", points: 40, keywords: ["pendidikan", "hak pendidikan", "sekolah", "menuntut ilmu", "pendidikan layak"] },
+            { text: "Hak bebas dari perlakuan diskriminasi", points: 20, keywords: ["bebas diskriminasi", "anti diskriminasi", "tidak diskriminatif", "diskriminasi"] },
+          ],
+        },
+        {
+          question: "Sebutkan asas penyelenggaraan Pemilu yang ditegaskan dalam UUD 1945!",
+          answers: [
+            { text: "Langsung", points: 100, keywords: ["langsung", "luber"] },
+            { text: "Umum", points: 80, keywords: ["umum"] },
+            { text: "Bebas dan rahasia", points: 60, keywords: ["bebas", "rahasia", "bebas rahasia", "luber jurdil"] },
+            { text: "Jujur", points: 40, keywords: ["jujur", "jurdil"] },
+            { text: "Adil", points: 20, keywords: ["adil"] },
+          ],
+        },
+        {
+          question: "Sebutkan perbedaan tata negara setelah amandemen UUD 1945!",
+          answers: [
+            { text: "Presiden dipilih langsung oleh rakyat", points: 100, keywords: ["presiden dipilih rakyat", "pilpres langsung", "presiden langsung", "pemilu presiden"] },
+            { text: "Mahkamah Konstitusi resmi dibentuk", points: 80, keywords: ["mk dibentuk", "ada mk", "adanya mk", "mahkamah konstitusi dibentuk", "lembaga mk"] },
+            { text: "Kedaulatan bukan lagi milik MPR", points: 60, keywords: ["bukan milik mpr", "kedaulatan rakyat", "mpr bukan tertinggi", "mpr tidak lagi tertinggi"] },
+            { text: "Jabatan Presiden maksimal dua periode", points: 40, keywords: ["dua periode", "maksimal 2 periode", "pembatasan periode", "2 kali masa jabatan"] },
+            { text: "Lembaga DPA resmi dihapuskan", points: 20, keywords: ["dpa dihapus", "hapus dpa", "dpa dibubarkan", "hilangnya dpa"] },
+          ],
+        },
+      ];
 
-    /* =========================================================
+      /* =========================================================
        3. VARIABEL STATE PERMAINAN
        ========================================================= */
-    let currentQIndex = 0;
-    let activeTeam = 1; // 1 = TIM 1, 2 = TIM 2
-    let teamScores = { 1: 0, 2: 0 };
-    let currentRoundScores = { 1: 0, 2: 0 }; // Pencatat poin per babak
-    let teamStrikes = { 1: 0, 2: 0 };
-    let revealedTracker = [false, false, false, false, false];
+      let currentQIndex = 0;
+      let activeTeam = 1; // 1 = TIM 1, 2 = TIM 2
+      let teamScores = { 1: 0, 2: 0 };
+      let currentRoundScores = { 1: 0, 2: 0 }; // Pencatat poin per babak
+      let teamStrikes = { 1: 0, 2: 0 };
+      let revealedTracker = [false, false, false, false, false];
 
-    /* =========================================================
+      /* =========================================================
        4. INISIALISASI & TAMPILAN SOAL
        ========================================================= */
-    function loadQuestion(index) {
-      currentQIndex = index;
-      const data = questionBank[index];
-      
-      // Update UI Header & Pertanyaan
-      document.getElementById('trackerDisplay').innerText = `Soal ${index + 1} dari ${questionBank.length}`;
-      document.getElementById('questionText').innerText = `"${data.question}"`;
+      function loadQuestion(index) {
+        currentQIndex = index;
+        const data = questionBank[index];
 
-      // Reset Poin Babak Berjalan
-      currentRoundScores = { 1: 0, 2: 0 };
-      updateRoundScoreDisplays();
+        // Update UI Header & Pertanyaan
+        document.getElementById("trackerDisplay").innerText = `Soal ${index + 1} dari ${questionBank.length}`;
+        document.getElementById("questionText").innerText = `"${data.question}"`;
 
-      // Reset Keadaan Kartu Jawaban
-      revealedTracker = [false, false, false, false, false];
-      for (let i = 0; i < 5; i++) {
-        const cardEl = document.getElementById(`card-${i}`);
-        const cardBack = document.getElementById(`card-back-${i}`);
-        cardEl.classList.remove('revealed');
-        cardBack.classList.remove('no-point-glow');
-        document.getElementById(`ans-text-${i}`).innerText = data.answers[i].text;
+        // Reset Poin Babak Berjalan
+        currentRoundScores = { 1: 0, 2: 0 };
+        updateRoundScoreDisplays();
+
+        // Reset Keadaan Kartu Jawaban
+        revealedTracker = [false, false, false, false, false];
+        for (let i = 0; i < 5; i++) {
+          const cardEl = document.getElementById(`card-${i}`);
+          const cardBack = document.getElementById(`card-back-${i}`);
+          cardEl.classList.remove("revealed");
+          cardBack.classList.remove("no-point-glow");
+          document.getElementById(`ans-text-${i}`).innerText = data.answers[i].text;
+        }
+
+        // Reset Kesalahan (Strikes) untuk soal baru
+        resetRoundStrikes();
+        document.getElementById("teacherInput").value = "";
+        document.getElementById("teacherInput").focus();
       }
 
-      // Reset Kesalahan (Strikes) untuk soal baru
-      resetRoundStrikes();
-      document.getElementById('teacherInput').value = '';
-      document.getElementById('teacherInput').focus();
-    }
-
-    /* =========================================================
+      /* =========================================================
        5. SISTEM SKOR & PEMBUKAAN JAWABAN (DENGAN / TANPA POIN)
        ========================================================= */
-    function revealCard(cardIndex, addScoreToActive = true) {
-      if (cardIndex < 0 || cardIndex >= 5) return;
-      if (revealedTracker[cardIndex]) return;
+      function revealCard(cardIndex, addScoreToActive = true) {
+        if (cardIndex < 0 || cardIndex >= 5) return;
+        if (revealedTracker[cardIndex]) return;
 
-      revealedTracker[cardIndex] = true;
-      const cardEl = document.getElementById(`card-${cardIndex}`);
-      const cardBack = document.getElementById(`card-back-${cardIndex}`);
-      cardEl.classList.add('revealed');
+        revealedTracker[cardIndex] = true;
+        const cardEl = document.getElementById(`card-${cardIndex}`);
+        const cardBack = document.getElementById(`card-back-${cardIndex}`);
+        cardEl.classList.add("revealed");
 
-      if (addScoreToActive) {
-        const pts = questionBank[currentQIndex].answers[cardIndex].points;
-        teamScores[activeTeam] += pts;
-        currentRoundScores[activeTeam] += pts;
-        updateScoreBoard();
-        updateRoundScoreDisplays();
-        audioSys.playCorrect();
-        showPointsAnimation(activeTeam, `+${pts} POIN!`, false);
-      } else {
-        cardBack.classList.add('no-point-glow');
-      }
-    }
-
-    function revealAllRemainingCards(withPoints = false) {
-      for (let i = 0; i < 5; i++) {
-        if (!revealedTracker[i]) {
-          revealCard(i, withPoints);
+        if (addScoreToActive) {
+          const pts = questionBank[currentQIndex].answers[cardIndex].points;
+          teamScores[activeTeam] += pts;
+          currentRoundScores[activeTeam] += pts;
+          updateScoreBoard();
+          updateRoundScoreDisplays();
+          audioSys.playCorrect();
+          showPointsAnimation(activeTeam, `+${pts} POIN!`, false);
+        } else {
+          cardBack.classList.add("no-point-glow");
         }
       }
-    }
 
-    /* =========================================================
+      function revealAllRemainingCards(withPoints = false) {
+        for (let i = 0; i < 5; i++) {
+          if (!revealedTracker[i]) {
+            revealCard(i, withPoints);
+          }
+        }
+      }
+
+      /* =========================================================
        6. FITUR MEREBUT POIN LAWAN (BABAK INI & TOTAL AKUMULASI)
        ========================================================= */
-    // 6.1 Rebut Poin Hanya Pada Soal Berjalan
-    function stealRoundPoints() {
-      const opponentTeam = activeTeam === 1 ? 2 : 1;
-      const stolenPoints = currentRoundScores[opponentTeam];
+      // 6.1 Rebut Poin Hanya Pada Soal Berjalan
+      function stealRoundPoints() {
+        const opponentTeam = activeTeam === 1 ? 2 : 1;
+        const stolenPoints = currentRoundScores[opponentTeam];
 
-      if (stolenPoints <= 0) {
-        alert(`Tim ${opponentTeam} belum memiliki poin pada soal ini untuk direbut.`);
-        return;
+        if (stolenPoints <= 0) {
+          alert(`Tim ${opponentTeam} belum memiliki poin pada soal ini untuk direbut.`);
+          return;
+        }
+
+        teamScores[opponentTeam] -= stolenPoints;
+        teamScores[activeTeam] += stolenPoints;
+
+        currentRoundScores[activeTeam] += stolenPoints;
+        currentRoundScores[opponentTeam] = 0;
+
+        updateScoreBoard();
+        updateRoundScoreDisplays();
+
+        audioSys.playSteal();
+        showPointsAnimation(activeTeam, `+${stolenPoints} POIN REBUTAN!`, false);
+        showPointsAnimation(opponentTeam, `-${stolenPoints} POIN`, true);
       }
 
-      teamScores[opponentTeam] -= stolenPoints;
-      teamScores[activeTeam] += stolenPoints;
+      // 6.2 MENU BARU: Rebut SEMUA Akumulasi Poin Lawan (Total Keseluruhan)
+      function stealTotalPoints() {
+        const opponentTeam = activeTeam === 1 ? 2 : 1;
+        const totalOpponentScore = teamScores[opponentTeam];
 
-      currentRoundScores[activeTeam] += stolenPoints;
-      currentRoundScores[opponentTeam] = 0;
+        if (totalOpponentScore <= 0) {
+          alert(`Tim ${opponentTeam} tidak memiliki poin kumulatif (skor 0) untuk direbut.`);
+          return;
+        }
 
-      updateScoreBoard();
-      updateRoundScoreDisplays();
+        const konfirmasi = confirm(`APAKAH ANDA YAKIN?\n\nSemua akumulasi skor Tim ${opponentTeam} (${totalOpponentScore} poin) akan hangus dan dipindahkan seluruhnya ke Tim ${activeTeam}!`);
+        if (!konfirmasi) return;
 
-      audioSys.playSteal();
-      showPointsAnimation(activeTeam, `+${stolenPoints} POIN REBUTAN!`, false);
-      showPointsAnimation(opponentTeam, `-${stolenPoints} POIN`, true);
-    }
+        // Alihkan total akumulasi poin
+        teamScores[opponentTeam] = 0;
+        teamScores[activeTeam] += totalOpponentScore;
 
-    // 6.2 MENU BARU: Rebut SEMUA Akumulasi Poin Lawan (Total Keseluruhan)
-    function stealTotalPoints() {
-      const opponentTeam = activeTeam === 1 ? 2 : 1;
-      const totalOpponentScore = teamScores[opponentTeam];
+        // Alihkan juga poin babak berjalan
+        currentRoundScores[activeTeam] += currentRoundScores[opponentTeam];
+        currentRoundScores[opponentTeam] = 0;
 
-      if (totalOpponentScore <= 0) {
-        alert(`Tim ${opponentTeam} tidak memiliki poin kumulatif (skor 0) untuk direbut.`);
-        return;
+        updateScoreBoard();
+        updateRoundScoreDisplays();
+
+        // Audio & Efek Animasi
+        audioSys.playBigSteal();
+        showPointsAnimation(activeTeam, `+${totalOpponentScore} POIN TOTAL!`, false);
+        showPointsAnimation(opponentTeam, `-${totalOpponentScore} POIN HABIS!`, true);
       }
 
-      const konfirmasi = confirm(
-        `APAKAH ANDA YAKIN?\n\nSemua akumulasi skor Tim ${opponentTeam} (${totalOpponentScore} poin) akan hangus dan dipindahkan seluruhnya ke Tim ${activeTeam}!`
-      );
-      if (!konfirmasi) return;
+      function updateScoreBoard() {
+        document.getElementById("score1").innerText = teamScores[1];
+        document.getElementById("score2").innerText = teamScores[2];
+      }
 
-      // Alihkan total akumulasi poin
-      teamScores[opponentTeam] = 0;
-      teamScores[activeTeam] += totalOpponentScore;
+      function updateRoundScoreDisplays() {
+        document.getElementById("roundScoreTag1").innerText = `Poin Soal Ini: ${currentRoundScores[1]}`;
+        document.getElementById("roundScoreTag2").innerText = `Poin Soal Ini: ${currentRoundScores[2]}`;
+      }
 
-      // Alihkan juga poin babak berjalan
-      currentRoundScores[activeTeam] += currentRoundScores[opponentTeam];
-      currentRoundScores[opponentTeam] = 0;
+      function showPointsAnimation(teamId, text, isNegative = false) {
+        const bubble = document.getElementById(`bubble${teamId}`);
+        bubble.innerText = text;
+        bubble.classList.toggle("negative", isNegative);
+        bubble.style.transition = "none";
+        bubble.style.opacity = "1";
+        bubble.style.transform = "translate(-50%, -15px)";
 
-      updateScoreBoard();
-      updateRoundScoreDisplays();
+        setTimeout(() => {
+          bubble.style.transition = "all 0.8s ease-out";
+          bubble.style.opacity = "0";
+          bubble.style.transform = "translate(-50%, -45px)";
+        }, 900);
+      }
 
-      // Audio & Efek Animasi
-      audioSys.playBigSteal();
-      showPointsAnimation(activeTeam, `+${totalOpponentScore} POIN TOTAL!`, false);
-      showPointsAnimation(opponentTeam, `-${totalOpponentScore} POIN HABIS!`, true);
-    }
-
-    function updateScoreBoard() {
-      document.getElementById('score1').innerText = teamScores[1];
-      document.getElementById('score2').innerText = teamScores[2];
-    }
-
-    function updateRoundScoreDisplays() {
-      document.getElementById('roundScoreTag1').innerText = `Poin Soal Ini: ${currentRoundScores[1]}`;
-      document.getElementById('roundScoreTag2').innerText = `Poin Soal Ini: ${currentRoundScores[2]}`;
-    }
-
-    function showPointsAnimation(teamId, text, isNegative = false) {
-      const bubble = document.getElementById(`bubble${teamId}`);
-      bubble.innerText = text;
-      bubble.classList.toggle('negative', isNegative);
-      bubble.style.transition = 'none';
-      bubble.style.opacity = '1';
-      bubble.style.transform = 'translate(-50%, -15px)';
-
-      setTimeout(() => {
-        bubble.style.transition = 'all 0.8s ease-out';
-        bubble.style.opacity = '0';
-        bubble.style.transform = 'translate(-50%, -45px)';
-      }, 900);
-    }
-
-    /* =========================================================
+      /* =========================================================
        7. SISTEM KESALAHAN (STRIKE ❌) & TIM
        ========================================================= */
-    function switchActiveTeam() {
-      activeTeam = activeTeam === 1 ? 2 : 1;
-      document.getElementById('teamCard1').classList.toggle('active', activeTeam === 1);
-      document.getElementById('teamCard2').classList.toggle('active', activeTeam === 2);
-    }
-
-    function triggerMistake() {
-      if (teamStrikes[activeTeam] < 3) {
-        teamStrikes[activeTeam]++;
+      function switchActiveTeam() {
+        activeTeam = activeTeam === 1 ? 2 : 1;
+        document.getElementById("teamCard1").classList.toggle("active", activeTeam === 1);
+        document.getElementById("teamCard2").classList.toggle("active", activeTeam === 2);
       }
-      updateStrikeDisplay();
-      audioSys.playWrong();
-      showStrikeOverlay();
-    }
 
-    function updateStrikeDisplay() {
-      for (let t = 1; t <= 2; t++) {
-        for (let s = 1; s <= 3; s++) {
-          const el = document.getElementById(`t${t}-x${s}`);
-          if (s <= teamStrikes[t]) {
-            el.classList.add('active');
-          } else {
-            el.classList.remove('active');
+      function triggerMistake() {
+        if (teamStrikes[activeTeam] < 3) {
+          teamStrikes[activeTeam]++;
+        }
+        updateStrikeDisplay();
+        audioSys.playWrong();
+        showStrikeOverlay();
+      }
+
+      function updateStrikeDisplay() {
+        for (let t = 1; t <= 2; t++) {
+          for (let s = 1; s <= 3; s++) {
+            const el = document.getElementById(`t${t}-x${s}`);
+            if (s <= teamStrikes[t]) {
+              el.classList.add("active");
+            } else {
+              el.classList.remove("active");
+            }
           }
         }
       }
-    }
 
-    function resetRoundStrikes() {
-      teamStrikes[1] = 0;
-      teamStrikes[2] = 0;
-      updateStrikeDisplay();
-    }
+      function resetRoundStrikes() {
+        teamStrikes[1] = 0;
+        teamStrikes[2] = 0;
+        updateStrikeDisplay();
+      }
 
-    function showStrikeOverlay() {
-      const overlay = document.getElementById('strikeOverlay');
-      overlay.classList.add('show');
-      setTimeout(() => {
-        overlay.classList.remove('show');
-      }, 750);
-    }
+      function showStrikeOverlay() {
+        const overlay = document.getElementById("strikeOverlay");
+        overlay.classList.add("show");
+        setTimeout(() => {
+          overlay.classList.remove("show");
+        }, 750);
+      }
 
-    /* =========================================================
+      /* =========================================================
        8. PENCOCOKAN JAWABAN OTOMATIS (FUZZY MATCHING)
        ========================================================= */
-    function normalizeText(str) {
-      return str.toLowerCase().replace(/[^a-z0-9]/g, '').trim();
-    }
+      function normalizeText(str) {
+        return str
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "")
+          .trim();
+      }
 
-    function submitInputCheck() {
-      const inputEl = document.getElementById('teacherInput');
-      const rawVal = inputEl.value.trim();
-      if (!rawVal) return;
+      function submitInputCheck() {
+        const inputEl = document.getElementById("teacherInput");
+        const rawVal = inputEl.value.trim();
+        if (!rawVal) return;
 
-      const normInput = normalizeText(rawVal);
-      const answers = questionBank[currentQIndex].answers;
-      let matchedIndex = -1;
+        const normInput = normalizeText(rawVal);
+        const answers = questionBank[currentQIndex].answers;
+        let matchedIndex = -1;
 
-      if (['1', '2', '3', '4', '5'].includes(rawVal)) {
-        matchedIndex = parseInt(rawVal, 10) - 1;
-      } else {
-        for (let i = 0; i < answers.length; i++) {
-          if (revealedTracker[i]) continue;
-          
-          const normAns = normalizeText(answers[i].text);
-          if (normAns.includes(normInput) || normInput.includes(normAns)) {
-            matchedIndex = i;
-            break;
-          }
+        if (["1", "2", "3", "4", "5"].includes(rawVal)) {
+          matchedIndex = parseInt(rawVal, 10) - 1;
+        } else {
+          for (let i = 0; i < answers.length; i++) {
+            if (revealedTracker[i]) continue;
 
-          const kwList = answers[i].keywords;
-          for (let kw of kwList) {
-            const normKw = normalizeText(kw);
-            if (normInput.includes(normKw) || normKw.includes(normInput)) {
+            const normAns = normalizeText(answers[i].text);
+            if (normAns.includes(normInput) || normInput.includes(normAns)) {
               matchedIndex = i;
               break;
             }
+
+            const kwList = answers[i].keywords;
+            for (let kw of kwList) {
+              const normKw = normalizeText(kw);
+              if (normInput.includes(normKw) || normKw.includes(normInput)) {
+                matchedIndex = i;
+                break;
+              }
+            }
+            if (matchedIndex !== -1) break;
           }
-          if (matchedIndex !== -1) break;
+        }
+
+        if (matchedIndex !== -1 && !revealedTracker[matchedIndex]) {
+          revealCard(matchedIndex, true);
+          inputEl.value = "";
+        } else {
+          triggerMistake();
+          inputEl.select();
         }
       }
 
-      if (matchedIndex !== -1 && !revealedTracker[matchedIndex]) {
-        revealCard(matchedIndex, true);
-        inputEl.value = '';
-      } else {
-        triggerMistake();
-        inputEl.select();
-      }
-    }
+      document.getElementById("teacherInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          submitInputCheck();
+        }
+      });
 
-    document.getElementById('teacherInput').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        submitInputCheck();
-      }
-    });
-
-    /* =========================================================
+      /* =========================================================
        9. KONTROL ALUR & FINAL MODAL
        ========================================================= */
-    function nextQuestion() {
-      if (currentQIndex < questionBank.length - 1) {
-        loadQuestion(currentQIndex + 1);
-      } else {
-        showVictoryScreen();
+      function nextQuestion() {
+        if (currentQIndex < questionBank.length - 1) {
+          loadQuestion(currentQIndex + 1);
+        } else {
+          showVictoryScreen();
+        }
       }
-    }
 
-    function showVictoryScreen() {
-      audioSys.playVictory();
-      const s1 = teamScores[1];
-      const s2 = teamScores[2];
-      const total = s1 + s2;
+      function showVictoryScreen() {
+        audioSys.playVictory();
+        const s1 = teamScores[1];
+        const s2 = teamScores[2];
+        const total = s1 + s2;
 
-      document.getElementById('modalScore1').innerText = s1;
-      document.getElementById('modalScore2').innerText = s2;
-      document.getElementById('modalTotalPts').innerText = `Total Poin Terkumpul: ${total} Poin`;
+        document.getElementById("modalScore1").innerText = s1;
+        document.getElementById("modalScore2").innerText = s2;
+        document.getElementById("modalTotalPts").innerText = `Total Poin Terkumpul: ${total} Poin`;
 
-      let winMsg = "HASIL SERI / IMBANG!";
-      if (s1 > s2) winMsg = "🏆 TIM 1 MENANG! 🏆";
-      else if (s2 > s1) winMsg = "🏆 TIM 2 MENANG! 🏆";
+        let winMsg = "HASIL SERI / IMBANG!";
+        if (s1 > s2) winMsg = "🏆 TIM 1 MENANG! 🏆";
+        else if (s2 > s1) winMsg = "🏆 TIM 2 MENANG! 🏆";
 
-      document.getElementById('winnerText').innerText = winMsg;
-      document.getElementById('victoryModal').classList.add('show');
-    }
+        document.getElementById("winnerText").innerText = winMsg;
+        document.getElementById("victoryModal").classList.add("show");
+      }
 
-    function resetWholeGame() {
-      teamScores = { 1: 0, 2: 0 };
-      currentRoundScores = { 1: 0, 2: 0 };
-      updateScoreBoard();
-      updateRoundScoreDisplays();
-      activeTeam = 1;
-      document.getElementById('teamCard1').classList.add('active');
-      document.getElementById('teamCard2').classList.remove('active');
-      document.getElementById('victoryModal').classList.remove('show');
-      loadQuestion(0);
-    }
+      function resetWholeGame() {
+        teamScores = { 1: 0, 2: 0 };
+        currentRoundScores = { 1: 0, 2: 0 };
+        updateScoreBoard();
+        updateRoundScoreDisplays();
+        activeTeam = 1;
+        document.getElementById("teamCard1").classList.add("active");
+        document.getElementById("teamCard2").classList.remove("active");
+        document.getElementById("victoryModal").classList.remove("show");
+        loadQuestion(0);
+      }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      loadQuestion(0);
-    });
-  </script>
-</body>
+      window.addEventListener("DOMContentLoaded", () => {
+        loadQuestion(0);
+      });
+    </script>
+  </body>
 </html>
